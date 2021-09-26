@@ -37,11 +37,11 @@ def _read_cmd(cmd):
     return data
 
 
-def _send_msg(msg, bot=BOT):
+def _send_msg(msg, bot=BOT, chat_id=ADMIN):
     """
     Send message to defined API chat client
     """
-    bot.sendMessage(ADMIN, msg)
+    bot.sendMessage(chat_id, msg)
 
 
 def _handle(msg):
@@ -114,5 +114,6 @@ while True:
         sys.stderr.write("Program interrupted\n")
         exit()
 
-    except:
+    except Exception as e:
         sys.stderr.write("Other error or exception occurred!\n")
+        sys.stderr.write(f"{e}\n")
