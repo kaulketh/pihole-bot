@@ -19,6 +19,7 @@ from secret import TOKEN
 
 BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
+TMP = "tmpfile"
 
 
 def _read_cmd(cmd):
@@ -27,13 +28,13 @@ def _read_cmd(cmd):
     variable and get back
     """
 
-    os.system(cmd + ' > tmp 2>&1')
+    os.system(f"{cmd} > {TMP} 2>&1")
     data = ""
-    file = open('tmp', 'r')
+    file = open(f"{TMP}", "r")
     data = file.read()
     file.close()
-    if os.path.exists('tmp'):
-        os.remove('tmp')
+    if os.path.exists(f"{TMP}"):
+        os.remove(f"{TMP}")
     return data
 
 
@@ -95,7 +96,7 @@ def _handle(msg):
                 f"/RESTART - force reboot of RBPi")
         else:
             _send_msg(
-                f"Unknown command...!\n"
+                f"Unknown command.\n"
                 f"Please use /help for more information.")
     else:
         sys.stdout.write(f"Got command from {name}, has wrong ID:{chat_id}!\n")
@@ -104,16 +105,16 @@ def _handle(msg):
             f"Your Chat ID \'{chat_id}\' was blocked!")
 
 
-MessageLoop(BOT, _handle).run_as_thread()
-sys.stdout.write("I am listening...\n")
+if __name__ == '__main__':
+    MessageLoop(BOT, _handle).run_as_thread()
+    sys.stdout.write("I am listening...\n")
+    while True:
+        try:
+            time.sleep(10)
+        except KeyboardInterrupt:
+            sys.stderr.write("Program interrupted\n")
+            exit()
 
-while True:
-    try:
-        time.sleep(10)
-    except KeyboardInterrupt:
-        sys.stderr.write("Program interrupted\n")
-        exit()
-
-    except Exception as e:
-        sys.stderr.write("Other error or exception occurred!\n")
-        sys.stderr.write(f"{e}\n")
+        except Exception as e:
+            sys.stderr.write("Other error or exception occurred!\n")
+            sys.stderr.write(f"{e}\n")
