@@ -12,20 +12,20 @@ import sys
 import time
 
 import telepot
+from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
-from secret import LIST_OF_ADMINS
-from secret import TOKEN
+from resources \
+    import COMMANDS, HELP, WRONG, START, TMP, LIST_OF_ADMINS, TOKEN, \
+    RESTART_DNS
 
 BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
-TMP = "tmpfile"
 
 
-def _read_cmd(cmd):
+def _execute_os_cmd(cmd):
     """
-    Assign default output (stdout 1 and stderr 2) to file and read in
-    variable and get back
+    Executes os command and gets response data
     """
 
     os.system(f"{cmd} > {TMP} 2>&1")
@@ -42,7 +42,13 @@ def _send_msg(msg, bot=BOT, chat_id=ADMIN):
     """
     Send message to defined API chat client
     """
-    bot.sendMessage(chat_id, msg)
+    try:
+        bot.sendMessage(chat_id, msg)
+        sys.stdout.write(f"{msg}\n")
+    except TelegramError as e:
+        error = f"{type(e)}\n{e.error_code}\n{e}\n"
+        sys.stderr.write(error)
+        bot.sendMessage(chat_id, error)
 
 
 def _handle(msg):
@@ -53,51 +59,23 @@ def _handle(msg):
 
     if chat_id in LIST_OF_ADMINS:
         sys.stdout.write(f"Got '{command}' from {name}.\n")
-
-        # commands
-        if command == "/RESTART":
-            _send_msg(_read_cmd("sudo reboot"))
-        elif command == "/pi_list_update":
-            _send_msg(_read_cmd("pihole -g"))
-        elif command == "/pi_info":
-            _send_msg(_read_cmd("pihole -c -e"))
-        elif command == "/pi_version":
-            _send_msg(_read_cmd("pihole version"))
-        elif command == "/pi_status":
-            _send_msg(_read_cmd("pihole status"))
-        elif command == "/pi_update":
-            _send_msg(_read_cmd("pihole -up"))
-        elif command == "/pi_restart":
-            _send_msg(_read_cmd("pihole restartdns"))
-        elif command == "/pi_enable":
-            _send_msg(_read_cmd("pihole enable"))
-            time.sleep(1)
-            _send_msg(_read_cmd("pihole status"))
-        elif command == "/pi_disable":
-            _send_msg(_read_cmd("pihole disable"))
-        elif command == "/uptime":
-            _send_msg(_read_cmd("uptime"))
-        elif command == "/start":
-            _send_msg("Bot is ready!\nUse /help for additional info.")
+        # start
+        if command == "/start":
+            _send_msg(START)
+        # help
         elif command == "/help":
-            _send_msg(
-                f"Usage and possible commands:\n"
-                f"/help - this info\n"
-                f"/pi_info - output stats\n"
-                f"/pi_version "
-                f"- show installed versions of pi-hole, console, FTL\n"
-                f"/uptime - last start time of the RBPi\n"
-                f"/pi_status - status of pihole\n"
-                f"/pi_update - force update\n"
-                f"/pi_list_update - update the list of ad-serving domains\n"
-                f"/pi_restart - restart dns service\n"
-                f"/pi_disable - disable pihole\n"
-                f"/pi_enable - enable pihole\n"
-                f"/RESTART - force reboot of RBPi")
+            _send_msg(HELP)
+        # restart dns
+        elif command == "/pi_restart":
+            _execute_os_cmd(COMMANDS.get("/pi_restart"))
+            _send_msg(RESTART_DNS)
+
+        # any other commands
+        elif any(c for c in COMMANDS if (command == c)):
+            _send_msg(_execute_os_cmd(COMMANDS.get(command)))
+        # wrong command
         else:
-            _send_msg(
-                f"Unknown command.\n"
-                f"Please use /help for more information.")
+            _send_msg(WRONG)
     else:
         sys.stdout.write(f"Got command from {name}, has wrong ID:{chat_id}!\n")
         _send_msg(
@@ -108,13 +86,14 @@ def _handle(msg):
 if __name__ == '__main__':
     MessageLoop(BOT, _handle).run_as_thread()
     sys.stdout.write("I am listening...\n")
+    BOT.sendPhoto(ADMIN, open("resources/pihole.png", "rb"))
+    _send_msg(START)
     while True:
         try:
             time.sleep(10)
         except KeyboardInterrupt:
             sys.stderr.write("Program interrupted\n")
             exit()
-
         except Exception as e:
             sys.stderr.write("Other error or exception occurred!\n")
             sys.stderr.write(f"{e}\n")
