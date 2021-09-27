@@ -57,7 +57,7 @@ def _handle(msg):
     name = msg['chat']['first_name'] + ' ' + msg['chat']['last_name']
     alias = msg['chat']['username']
 
-    if chat_id in LIST_OF_ADMINS:
+    if chat_id == ADMIN:
         sys.stdout.write(f"Got '{command}' from {name}.\n")
         # start
         if command == "/start":
@@ -69,7 +69,6 @@ def _handle(msg):
         elif command == "/pi_restart":
             _execute_os_cmd(COMMANDS.get("/pi_restart"))
             _send_msg(RESTART_DNS)
-
         # any other commands
         elif any(c for c in COMMANDS if (command == c)):
             _send_msg(_execute_os_cmd(COMMANDS.get(command)))
