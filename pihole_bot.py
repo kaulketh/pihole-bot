@@ -45,8 +45,8 @@ def _send_msg(msg, bot=BOT, chat_id=ADMIN):
     try:
         bot.sendMessage(chat_id, msg)
         sys.stdout.write(f"{msg}\n")
-    except TelegramError as e:
-        error = f"{type(e)}\n{e.error_code}\n{e}\n"
+    except TelegramError as te:
+        error = f"{type(te)}\n{te.error_code}\n{te}\n"
         sys.stderr.write(error)
         bot.sendMessage(chat_id, error)
 
@@ -87,11 +87,13 @@ if __name__ == '__main__':
     sys.stdout.write("I am listening...\n")
     BOT.sendPhoto(ADMIN, open("/home/pi/bot/resources/pihole.png", "rb"))
     _send_msg(START)
+    _send_msg(_execute_os_cmd(COMMANDS.get("/pi_status")))
+
     while True:
         try:
             time.sleep(10)
         except KeyboardInterrupt:
-            sys.stderr.write("Program interrupted\n")
+            sys.stderr.write("\nProgram interrupted\n")
             exit()
         except Exception as e:
             sys.stderr.write("Other error or exception occurred!\n")
