@@ -85,7 +85,7 @@ def _handle(msg):
 if __name__ == '__main__':
     MessageLoop(BOT, _handle).run_as_thread()
     sys.stdout.write("I am listening...\n")
-    BOT.sendPhoto(ADMIN, open("resources/pihole.png", "rb"))
+    BOT.sendPhoto(ADMIN, open("/home/pi/bot/resources/pihole.png", "rb"))
     _send_msg(START)
     while True:
         try:
