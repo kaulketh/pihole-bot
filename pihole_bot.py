@@ -8,8 +8,8 @@
 # -----------------------------------------------------------
 
 import os
+import signal
 import sys
-import time
 
 import telepot
 from telepot.exception import TelegramError
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            time.sleep(10)
+            signal.pause()
         except KeyboardInterrupt:
             sys.stderr.write("\nProgram interrupted\n")
             exit()
