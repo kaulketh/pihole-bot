@@ -7,5 +7,5 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
-from .constants import *
+from .pihole_constants import *
 from .secret import *
