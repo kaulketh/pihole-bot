@@ -71,6 +71,11 @@ def _handle(msg):
         elif command == "/pi_restart":
             _execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_restart"))
             _send_msg(RESTART_DNS)
+        # info (chronometer)
+        elif command == "/pi_info":
+            m = _execute_os_cmd(PI_HOLE_COMMANDS.get(command))
+            i = m.rfind("Hostname")
+            _send_msg(m[i:])
         # control
         elif command == "/router_restart":
             reboot_box()
