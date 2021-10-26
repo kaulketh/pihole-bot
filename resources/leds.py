@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------
-# act_led.py
+# leds.py
 # created 25.10.2021
 # Thomas Kaulke, kaulketh@gmail.com
 # https://github.com/kaulketh
@@ -9,9 +9,9 @@
 import os
 
 
-def led_on():
+def pwr_led_on():
     """
-    Turn on activity LED of Raspberry Pi
+    Turn on power LED of Raspberry Pi
     :return:
     """
     on = """
@@ -22,9 +22,9 @@ def led_on():
     """
     os.system(on)
 
-def led_off():
+def pwr_led_off():
     """
-    Turn off activity LED of Raspberry Pi
+    Turn off power LED of Raspberry Pi
     :return:
     """
     off = """

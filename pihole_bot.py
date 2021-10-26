@@ -19,7 +19,7 @@ from resources \
     import PI_HOLE_COMMANDS, HELP, WRONG, START, TMP, LIST_OF_ADMINS, TOKEN, \
     RESTART_DNS, RESTART_REPS, RESTART_ROUTER, RESTART_ALL, \
     reboot_box, reboot_repeaters, restart_all, LED_ENABLED, LED_DISABLED, \
-    led_on, led_off
+    pwr_led_on, pwr_led_off
 
 BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
@@ -71,8 +71,7 @@ def _handle(msg):
         elif command == "/pi_restart":
             _execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_restart"))
             _send_msg(RESTART_DNS)
-        # TODO: add control commands
-        # Network control
+        # control
         elif command == "/router_restart":
             reboot_box()
             _send_msg(RESTART_ROUTER)
@@ -80,13 +79,13 @@ def _handle(msg):
             reboot_repeaters()
             _send_msg(RESTART_REPS)
         elif command == "/restart_all":
-            restart_all()
             _send_msg(RESTART_ALL)
-        elif command == "/enable_ACT_LED":
-            led_on()
+            restart_all()
+        elif command == "/enable_pwr_LED":
+            pwr_led_on()
             _send_msg(LED_ENABLED)
-        elif command == "/disable_ACT_LED":
-            led_off()
+        elif command == "/disable_pwr_LED":
+            pwr_led_off()
             _send_msg(LED_DISABLED)
         # any other commands
         elif any(c for c in PI_HOLE_COMMANDS if (command == c)):

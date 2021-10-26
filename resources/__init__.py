@@ -7,7 +7,7 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
-from .act_led import *
+from .leds import *
 from .constants import *
 from .reboot import *
-from .secret import *
+from .secret import * # no public deployment

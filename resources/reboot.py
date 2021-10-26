@@ -12,9 +12,9 @@ import sys
 import time
 from subprocess import call
 
-from resources import BOX_IP, BOX_USER_PW, \
-    REP_IP_1, REP_PW, REP_IP_2, MINUTE, \
-    BOX_USER, DAY
+from .constants import DAY, MINUTE
+from .secret import BOX_IP, BOX_USER_PW, \
+    REP_IP_1, REP_PW, REP_IP_2, BOX_USER
 
 
 class RebootFritzDevice:

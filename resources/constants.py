@@ -25,8 +25,8 @@ PiHole control
 /pi_update - force update
 /pi_list_update - update the list of ad-serving domains
 
-/enable_ACT_LED - turn LED on
-/disable_ACT_LED - turn LED off
+/enable_pwr_LED - turn LED on
+/disable_pwr_LED - turn LED off
 /RESTART - force reboot of PiHole
 
 Network control
@@ -62,11 +62,11 @@ RESTART_ROUTER = """
 RESTART_REPS = """
 [✓] Restarted repeaters"""
 RESTART_ALL = """
-[✓] Restarted all network devices"""
+[✓] Restarting all network devices..."""
 LED_ENABLED = """
-[✓] Enabled ACT LED"""
+[✓] Enabled power LED"""
 LED_DISABLED = """
-[i] Disabled ACT LED"""
+[i] Disabled power LED"""
 
 # duration constants in seconds
 SECOND = 1
