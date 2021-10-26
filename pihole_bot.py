@@ -75,7 +75,7 @@ def _handle(msg):
         elif command == "/router_restart":
             reboot_box()
             _send_msg(RESTART_ROUTER)
-        elif command == "/repeater_restart":
+        elif command == "/repeaters_restart":
             reboot_repeaters()
             _send_msg(RESTART_REPS)
         elif command == "/restart_all":

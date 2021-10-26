@@ -31,7 +31,7 @@ PiHole control
 
 Network control
 /router_restart - force reboot of router
-/repeater_restart - force reboot of all repeaters
+/repeaters_restart - force reboot of all repeaters
 /restart_all - force reboot of all network devices"""
 
 START = """
