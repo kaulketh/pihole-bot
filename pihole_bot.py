@@ -103,7 +103,7 @@ def _handle(msg):
 if __name__ == '__main__':
     MessageLoop(BOT, _handle).run_as_thread()
     sys.stdout.write("I am listening...\n")
-    BOT.sendPhoto(ADMIN, open("/home/pi/bot/resources/pihole.png", "rb"))
+    # BOT.sendPhoto(ADMIN, open("/home/pi/bot/resources/pihole.png", "rb"))
     _send_msg(START)
     _send_msg(_execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_status")))
 

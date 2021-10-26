@@ -8,8 +8,9 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
-TMP = "tmpfile"
+TMP = "tmp_file"
 
+# message texts
 HELP = """
 Usage and possible commands:
 /help - this info
@@ -42,6 +43,20 @@ WRONG = """
 Unknown command.
 Please use /help for more information."""
 
+RESTART_DNS = """
+[✓] Restarted DNS server"""
+RESTART_ROUTER = """
+[✓] Router is restarting..."""
+RESTART_REPS = """
+[✓] Repeaters are restarting..."""
+RESTART_ALL = """
+[✓] Restarting all network devices..."""
+LED_ENABLED = """
+[✓] Power LED enabled"""
+LED_DISABLED = """
+[i] Power LED disabled"""
+
+# commands
 PI_HOLE_COMMANDS = {
     "/RESTART": "sudo reboot",
     "/pi_list_update": "pihole -g",
@@ -55,20 +70,7 @@ PI_HOLE_COMMANDS = {
     "/uptime": "uptime"
 }
 
-RESTART_DNS = """
-[✓] Restarted DNS server"""
-RESTART_ROUTER = """
-[✓] Restarted router"""
-RESTART_REPS = """
-[✓] Restarted repeaters"""
-RESTART_ALL = """
-[✓] Restarting all network devices..."""
-LED_ENABLED = """
-[✓] Enabled power LED"""
-LED_DISABLED = """
-[i] Disabled power LED"""
-
-# duration constants in seconds
+# durations
 SECOND = 1
 MINUTE = 60
 HOUR = 3_600
