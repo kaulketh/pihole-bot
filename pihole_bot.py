@@ -16,8 +16,10 @@ from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
 from resources \
-    import COMMANDS, HELP, WRONG, START, TMP, LIST_OF_ADMINS, TOKEN, \
-    RESTART_DNS
+    import PI_HOLE_COMMANDS, HELP, WRONG, START, TMP, LIST_OF_ADMINS, TOKEN, \
+    RESTART_DNS, RESTART_REPS, RESTART_ROUTER, RESTART_ALL, \
+    reboot_box, reboot_repeaters, restart_all, LED_ENABLED, LED_DISABLED, \
+    led_on, led_off
 
 BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
@@ -67,11 +69,28 @@ def _handle(msg):
             _send_msg(HELP)
         # restart dns
         elif command == "/pi_restart":
-            _execute_os_cmd(COMMANDS.get("/pi_restart"))
+            _execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_restart"))
             _send_msg(RESTART_DNS)
+        # TODO: add control commands
+        # Network control
+        elif command == "/router_restart":
+            reboot_box()
+            _send_msg(RESTART_ROUTER)
+        elif command == "/repeater_restart":
+            reboot_repeaters()
+            _send_msg(RESTART_REPS)
+        elif command == "/restart_all":
+            restart_all()
+            _send_msg(RESTART_ALL)
+        elif command == "/enable_ACT_LED":
+            led_on()
+            _send_msg(LED_ENABLED)
+        elif command == "/disable_ACT_LED":
+            led_off()
+            _send_msg(LED_DISABLED)
         # any other commands
-        elif any(c for c in COMMANDS if (command == c)):
-            _send_msg(_execute_os_cmd(COMMANDS.get(command)))
+        elif any(c for c in PI_HOLE_COMMANDS if (command == c)):
+            _send_msg(_execute_os_cmd(PI_HOLE_COMMANDS.get(command)))
         # wrong command
         else:
             _send_msg(WRONG)
@@ -87,7 +106,7 @@ if __name__ == '__main__':
     sys.stdout.write("I am listening...\n")
     BOT.sendPhoto(ADMIN, open("/home/pi/bot/resources/pihole.png", "rb"))
     _send_msg(START)
-    _send_msg(_execute_os_cmd(COMMANDS.get("/pi_status")))
+    _send_msg(_execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_status")))
 
     while True:
         try:
