@@ -6,9 +6,8 @@
 # Thomas Kaulke, kaulketh@gmail.com
 # https://github.com/kaulketh
 # -----------------------------------------------------------
-
-import os
 import signal
+import subprocess
 import sys
 
 import telepot
@@ -16,7 +15,7 @@ from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
 from resources \
-    import PI_HOLE_COMMANDS, HELP, WRONG, START, TMP, LIST_OF_ADMINS, TOKEN, \
+    import PI_HOLE_COMMANDS, HELP, WRONG, START, LIST_OF_ADMINS, TOKEN, \
     RESTART_DNS, RESTART_REPS, RESTART_ROUTER, RESTART_ALL, \
     reboot_box, reboot_repeaters, restart_all, LED_ENABLED, LED_DISABLED, \
     pwr_led_on, pwr_led_off
@@ -25,20 +24,11 @@ BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
 
 
-# TODO: change to subprocess!
 def _execute_os_cmd(cmd):
-    """
-    Executes os command and gets response data
-    """
-
-    os.system(f"{cmd} > {TMP} 2>&1")
-    data = ""
-    file = open(f"{TMP}", "r")
-    data = file.read()
-    file.close()
-    if os.path.exists(f"{TMP}"):
-        os.remove(f"{TMP}")
-    return data
+    sp = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+    out = sp.communicate()[0]
+    sp.wait()
+    return out.decode()
 
 
 def _send_msg(msg, bot=BOT, chat_id=ADMIN):

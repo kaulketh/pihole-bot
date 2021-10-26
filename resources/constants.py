@@ -8,8 +8,6 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
-TMP = "tmp_file"
-
 # message texts
 HELP = """
 Usage and possible commands:
@@ -54,7 +52,7 @@ RESTART_ALL = """
 LED_ENABLED = """
 [✓] Power LED enabled"""
 LED_DISABLED = """
-[i] Power LED disabled"""
+[✗] Power LED disabled"""
 
 # commands
 PI_HOLE_COMMANDS = {
