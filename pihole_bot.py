@@ -25,6 +25,7 @@ BOT = telepot.Bot(TOKEN)
 ADMIN = LIST_OF_ADMINS[0]
 
 
+# TODO: change to subprocess!
 def _execute_os_cmd(cmd):
     """
     Executes os command and gets response data
