@@ -10,9 +10,11 @@
 import os
 import sys
 import time
+import traceback
+from datetime import timedelta
 from subprocess import call
 
-from .constants import DAY, MINUTE
+from .constants import MINUTE
 from .secret import BOX_IP, BOX_USER_PW, \
     REP_IP_1, REP_PW, REP_IP_2, BOX_USER
 
@@ -50,27 +52,41 @@ class RebootFritzDevice:
             sys.stderr.write(f"Problem while executing cURL request: {e}\n")
 
 
-def every(interval, func, *args):
+def repeat(func, *args,
+           weeks=0,
+           days=0,
+           hours=0,
+           minutes=0,
+           seconds=0,
+           milliseconds=0,
+           microseconds=0
+           ):
     """
-    https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds/25251804#25251804
+    origin: https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds/25251804#25251804
     """
 
+    interval = timedelta(weeks=weeks, days=days, hours=hours,
+                         minutes=minutes,
+                         seconds=seconds,
+                         milliseconds=milliseconds,
+                         microseconds=microseconds).total_seconds()
     next_time = time.time() + interval
-
     while True:
-        sys.stdout.write(f"Start '{func.__name__}{args}' "
+        sys.stdout.write(f"(Re)run {func} "
                          f"in {interval} seconds.\n")
-        time.sleep(max(0, next_time - time.time()))
+        time.sleep(max(0.0, next_time - time.time()))
         # noinspection PyBroadException
         # TODO: Exception handling properly
         try:
             func(*args)
         except Exception as e:
-            # traceback.print_exc()
-            sys.stderr.write(f"Problem while executing repetitive task: {e}\n")
-        # skip tasks if we are behind schedule:
-        next_time += (time.time() - next_time) \
-                     // interval * interval + interval
+            traceback.print_exc()
+            sys.stderr.write(
+                f"Problem while executing repetitive task: {e}\n")
+        if interval != 0:
+            # skip tasks if we are behind schedule:
+            next_time += (time.time() - next_time) \
+                         // interval * interval + interval
 
 
 def reboot_box():
@@ -99,4 +115,4 @@ def restart_all(myself_too=True,
 
 if __name__ == '__main__':
     # implement call as service or cronjob or what ever
-    every(DAY, restart_all)
+    repeat(restart_all, weeks=0, days=1, hours=0, minutes=0, seconds=0)
