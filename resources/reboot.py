@@ -128,7 +128,7 @@ def main(option=0):
         sys.stdout.write("Restart forced directly!\n")
         restart_all()
     elif option == 3:
-        # scheduled it as runtime cron job directly
+        # scheduled as runtime cron job directly
         sys.stdout.write("Restart scheduled daily at 4AM.\n")
         s = BlockingScheduler(timezone=pytz.UTC)
         s.add_job(restart_all, trigger='cron', day_of_week='mon-sun', hour=4)
