@@ -6,13 +6,15 @@
 # Thomas Kaulke, kaulketh@gmail.com
 # https://github.com/kaulketh
 # -----------------------------------------------------------
-
 import os
 import sys
 import time
 import traceback
 from datetime import timedelta
 from subprocess import call
+
+import pytz
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 from .constants import MINUTE
 from .secret import BOX_IP, BOX_USER_PW, \
@@ -113,6 +115,31 @@ def restart_all(myself_too=True,
         reboot_host()
 
 
+def main(option=0):
+    def test():
+        print("Test scheduled")
+
+    if option == 1:
+        # call repeatedly, e.g. every day at the same time
+        sys.stdout.write("Restart will forced daily at the present time.\n")
+        repeat(restart_all, weeks=0, days=1, hours=0, minutes=0, seconds=0)
+    elif option == 2:
+        # call directly to restart all devices
+        sys.stdout.write("Restart forced directly!\n")
+        restart_all()
+    elif option == 3:
+        # scheduled it as runtime cron job directly
+        sys.stdout.write("Restart scheduled daily at 4AM.\n")
+        s = BlockingScheduler(timezone=pytz.UTC)
+        s.add_job(restart_all, trigger='cron', day_of_week='mon-sun', hour=4)
+        # s.add_job(test, trigger='cron', day_of_week='mon-sun', second=2)
+        try:
+            s.start()
+        except (KeyboardInterrupt, SystemExit) as e:
+            sys.stderr.write(f"{e}\n")
+    else:
+        sys.stderr.write("Called w/o option selected!\n")
+
+
 if __name__ == '__main__':
-    # implement call as service or cronjob or what ever
-    repeat(restart_all, weeks=0, days=1, hours=0, minutes=0, seconds=0)
+    pass
