@@ -14,10 +14,11 @@ import telepot
 from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
-from resources import START, PI_HOLE_COMMANDS, HELP, RESTART_DNS, \
-    RESTART_ROUTER, RESTART_REPS, RESTART_ALL, LED_ENABLED, LED_DISABLED, \
-    pwr_led_off, pwr_led_on, restart_all, reboot_repeaters, reboot_box, WRONG, \
-    TOKEN, LIST_OF_ADMINS
+from .constants import START, PI_HOLE_COMMANDS, HELP, RESTART_DNS, \
+    RESTART_ROUTER, RESTART_REPS, RESTART_ALL, LED_ENABLED, LED_DISABLED, WRONG
+from .leds import pwr_led_off, pwr_led_on
+from .reboot import restart_all, reboot_repeaters, reboot_box
+from .secret import TOKEN, LIST_OF_ADMINS
 
 
 def _execute_os_cmd(cmd):

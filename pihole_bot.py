@@ -6,7 +6,7 @@
 # Thomas Kaulke, kaulketh@gmail.com
 # https://github.com/kaulketh
 # -----------------------------------------------------------
-import bot
+from resources import bot
 
 if __name__ == '__main__':
     bot.main()
