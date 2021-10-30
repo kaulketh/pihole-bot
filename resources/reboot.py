@@ -16,8 +16,8 @@ from subprocess import call
 import pytz
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from .constants import MINUTE
-from .secret import BOX_IP, BOX_USER_PW, \
+from resources.constants import MINUTE
+from resources.secret import BOX_IP, BOX_USER_PW, \
     REP_IP_1, REP_PW, REP_IP_2, BOX_USER
 
 
