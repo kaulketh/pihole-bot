@@ -1,0 +1,12 @@
+[Unit]
+Description = Fritz! network devices restart
+After = multi-user.target
+
+[Service]
+Type = idle
+Restart=on-failure
+RestartSec=5s
+ExecStart = /usr/bin/python3 /home/pi/bot/fritz.py
+
+[Install]
+WantedBy = multi-user.target
