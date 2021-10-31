@@ -13,4 +13,4 @@
 from resources import reboot
 
 if __name__ == '__main__':
-    reboot.main(3)
+    reboot.schedule_as_cronjob()

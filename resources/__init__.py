@@ -7,7 +7,7 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
-from .bot import main
+from .bot import run
 from .constants import *
 from .leds import *
 from .reboot import *

@@ -108,6 +108,8 @@ def reboot_host():
 def restart_all(myself_too=True,
                 after_router=5 * MINUTE,
                 after_other_devices=3 * MINUTE):
+    # call directly to restart all devices
+    sys.stdout.write("Restart forced directly!\n")
     reboot_box()
     time.sleep(after_router)
     reboot_repeaters()
@@ -116,29 +118,32 @@ def restart_all(myself_too=True,
         reboot_host()
 
 
-def main(option=0):
+def schedule_as_cronjob(day_of_week='*', hour=4):
+    # scheduled as runtime cron job directly
+    sys.stdout.write(f"Restart scheduled daily at {hour}AM.\n")
+    local_timezone = str(tzlocal.get_localzone())
+    cron_trigger = CronTrigger(day_of_week=day_of_week,
+                               hour=hour,
+                               timezone=local_timezone)
+    scheduler = BlockingScheduler(timezone=local_timezone)
+    scheduler.add_job(restart_all, trigger=cron_trigger)
+    try:
+        scheduler.start()
+    # noinspection PyBroadException
+    # TODO: Exception handling properly
+    except Exception as e:
+        sys.stderr.write(f"{e}\n")
+
+
+def start(option=0):
     if option == 1:
         # call repeatedly, e.g. every day at the same time
         sys.stdout.write("Restart will forced daily at the present time.\n")
         repeat(restart_all, weeks=0, days=1, hours=0, minutes=0, seconds=0)
     elif option == 2:
-        # call directly to restart all devices
-        sys.stdout.write("Restart forced directly!\n")
         restart_all()
     elif option == 3:
-        # scheduled as runtime cron job directly
-        restart_hour = 4
-        sys.stdout.write(f"Restart scheduled daily at {restart_hour}AM.\n")
-        local_timezone = str(tzlocal.get_localzone())
-        cron_trigger = CronTrigger(day_of_week='*',
-                                   hour=restart_hour,
-                                   timezone=local_timezone)
-        scheduler = BlockingScheduler(timezone=local_timezone)
-        scheduler.add_job(restart_all, trigger=cron_trigger)
-        try:
-            scheduler.start()
-        except (KeyboardInterrupt, SystemExit) as e:
-            sys.stderr.write(f"{e}\n")
+        schedule_as_cronjob()
     else:
         sys.stderr.write("Called w/o option selected!\n")
 

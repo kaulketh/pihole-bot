@@ -120,9 +120,9 @@ class Bot:
                 f"Your Chat ID \'{chat_id}\' was blocked!")
 
 
-def main():
+def run():
     Bot(TOKEN, LIST_OF_ADMINS[0]).start()
 
 
 if __name__ == '__main__':
-    main()
+    pass
