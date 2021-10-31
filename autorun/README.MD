@@ -3,7 +3,7 @@
 A possibility to enable run at boot up is to use the _systemd_ files. _systemd_ provides a standard process for controlling what programs run when a Linux system boots up.<br>
 Note that _systemd_ is available only from the Jessie versions of Raspbian OS.
 
-### Use [service file included](fritz_restart.service) or create unit file
+### Use service files included or create unit file
 
 `sudo nano /lib/systemd/system/<service name>.service`
 

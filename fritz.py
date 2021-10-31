@@ -7,6 +7,9 @@
 # https://github.com/kaulketh
 # -----------------------------------------------------------
 
+# implemented as service to run at boot
+# fritz_restart.service
+
 from resources import reboot
 
 if __name__ == '__main__':

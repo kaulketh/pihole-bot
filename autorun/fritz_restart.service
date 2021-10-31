@@ -1,5 +1,5 @@
 [Unit]
-Description = Fritz! network devices restart
+Description = 'Fritz! network devices restart'
 After = multi-user.target
 
 [Service]

@@ -1,0 +1,12 @@
+[Unit]
+Description = 'Pihole control via Telegram'
+After = multi-user.target
+
+[Service]
+Type = idle
+Restart=on-failure
+RestartSec=5s
+ExecStart = /usr/bin/python3 /home/pi/bot/pihole_bot.py
+
+[Install]
+WantedBy = multi-user.target
