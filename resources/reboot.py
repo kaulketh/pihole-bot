@@ -15,6 +15,7 @@ from subprocess import call
 
 import tzlocal
 from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from resources.constants import MINUTE
 from resources.secret import BOX_IP, BOX_USER_PW, \
@@ -116,9 +117,6 @@ def restart_all(myself_too=True,
 
 
 def main(option=0):
-    def test():
-        print("Test scheduled")
-
     if option == 1:
         # call repeatedly, e.g. every day at the same time
         sys.stdout.write("Restart will forced daily at the present time.\n")
@@ -129,12 +127,16 @@ def main(option=0):
         restart_all()
     elif option == 3:
         # scheduled as runtime cron job directly
-        sys.stdout.write("Restart scheduled daily at 4AM.\n")
-        s = BlockingScheduler(timezone=f"{tzlocal.get_localzone()}")
-        s.add_job(restart_all, trigger='cron', day_of_week='mon-sun', hour=4)
-        # s.add_job(test, trigger='cron', day_of_week='mon-sun', second=2)
+        restart_hour = 4
+        sys.stdout.write(f"Restart scheduled daily at {restart_hour}AM.\n")
+        local_timezone = str(tzlocal.get_localzone())
+        cron_trigger = CronTrigger(day_of_week='*',
+                                   hour=restart_hour,
+                                   timezone=local_timezone)
+        scheduler = BlockingScheduler(timezone=local_timezone)
+        scheduler.add_job(restart_all, trigger=cron_trigger)
         try:
-            s.start()
+            scheduler.start()
         except (KeyboardInterrupt, SystemExit) as e:
             sys.stderr.write(f"{e}\n")
     else:
