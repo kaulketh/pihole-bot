@@ -130,7 +130,7 @@ def main(option=0):
     elif option == 3:
         # scheduled as runtime cron job directly
         sys.stdout.write("Restart scheduled daily at 4AM.\n")
-        s = BlockingScheduler(timezone=pytz.UTC)
+        s = BlockingScheduler(timezone='CET')
         s.add_job(restart_all, trigger='cron', day_of_week='mon-sun', hour=4)
         # s.add_job(test, trigger='cron', day_of_week='mon-sun', second=2)
         try:
