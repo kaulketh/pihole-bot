@@ -56,6 +56,8 @@ class Bot:
         sys.stdout.write("I am listening...\n")
         self.__send(START)
         self.__send(_execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_status")))
+        pwr_led_off()
+        self.__send(LED_DISABLED)
 
         while True:
             try:
