@@ -41,6 +41,9 @@ WRONG = """
 Unknown command.
 Please use /help for more information."""
 
+PRIVATE = "Hello {}, alias {}, this is a private bot.\n" \
+          "Your Chat ID \'{}\' was blocked!"
+
 RESTART_DNS = """
 [✓] Restarted DNS server"""
 RESTART_ROUTER = """
@@ -55,7 +58,7 @@ LED_DISABLED = """
 [✗] Power LED disabled"""
 
 # commands
-PI_HOLE_COMMANDS = {
+TELEGRAM_COMMANDS = {
     "/RESTART": "sudo reboot",
     "/pi_list_update": "pihole -g",
     "/pi_info": "pihole -c -e",

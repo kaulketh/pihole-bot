@@ -22,6 +22,7 @@ def pwr_led_on():
     """
     os.system(on)
 
+
 def pwr_led_off():
     """
     Turn off power LED of Raspberry Pi

@@ -14,11 +14,12 @@ import telepot
 from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
-from resources.constants import START, PI_HOLE_COMMANDS, HELP, RESTART_DNS, \
-    RESTART_ROUTER, RESTART_REPS, RESTART_ALL, LED_ENABLED, LED_DISABLED, WRONG
+from resources.constants import HELP, LED_DISABLED, LED_ENABLED, PRIVATE, \
+    RESTART_ALL, RESTART_DNS, RESTART_REPS, RESTART_ROUTER, START, \
+    TELEGRAM_COMMANDS, WRONG
 from resources.leds import pwr_led_off, pwr_led_on
-from resources.reboot import restart_all, reboot_repeaters, reboot_box
-from resources.secret import TOKEN, LIST_OF_ADMINS
+from resources.reboot import reboot_box, reboot_repeaters, restart_all
+from resources.secret import LIST_OF_ADMINS, TOKEN
 
 
 def _execute_os_cmd(cmd):
@@ -55,7 +56,7 @@ class Bot:
         MessageLoop(self.__bot, self.__handle).run_as_thread()
         sys.stdout.write("I am listening...\n")
         self.__send(START)
-        self.__send(_execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_status")))
+        self.__send(_execute_os_cmd(TELEGRAM_COMMANDS.get("/pi_status")))
         pwr_led_off()
         self.__send(LED_DISABLED)
 
@@ -68,11 +69,12 @@ class Bot:
             except Exception as e:
                 sys.stderr.write("Other error or exception occurred!\n")
                 sys.stderr.write(f"{e}\n")
+                exit()
 
     def __handle(self, msg):
         chat_id = msg['chat']['id']
         command = msg['text']
-        name = msg['chat']['first_name'] + ' ' + msg['chat']['last_name']
+        name = f"{msg['chat']['first_name']}' '{msg['chat']['last_name']}"
         alias = msg['chat']['username']
 
         if chat_id == self.__admin:
@@ -85,11 +87,11 @@ class Bot:
                 self.__send(HELP)
             # restart dns
             elif command == "/pi_restart":
-                _execute_os_cmd(PI_HOLE_COMMANDS.get("/pi_restart"))
+                _execute_os_cmd(TELEGRAM_COMMANDS.get("/pi_restart"))
                 self.__send(RESTART_DNS)
             # info (chronometer)
             elif command == "/pi_info":
-                m = _execute_os_cmd(PI_HOLE_COMMANDS.get(command))
+                m = _execute_os_cmd(TELEGRAM_COMMANDS.get(command))
                 i = m.rfind("Hostname")
                 self.__send(m[i:])
             # control
@@ -109,17 +111,15 @@ class Bot:
                 pwr_led_off()
                 self.__send(LED_DISABLED)
             # any other commands
-            elif any(c for c in PI_HOLE_COMMANDS if (command == c)):
-                self.__send(_execute_os_cmd(PI_HOLE_COMMANDS.get(command)))
+            elif any(c for c in TELEGRAM_COMMANDS if (command == c)):
+                self.__send(_execute_os_cmd(TELEGRAM_COMMANDS.get(command)))
             # wrong command
             else:
                 self.__send(WRONG)
         else:
             sys.stdout.write(f"Got command from {name}, "
                              f"has wrong ID:{chat_id}!\n")
-            self.__send(
-                f"Hello {name}, alias {alias}, this is a private bot.\n"
-                f"Your Chat ID \'{chat_id}\' was blocked!")
+            self.__send(PRIVATE.format(name, alias, chat_id))
 
 
 def run():

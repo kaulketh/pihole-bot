@@ -65,7 +65,8 @@ def repeat(func, *args,
            microseconds=0
            ):
     """
-    origin: https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds/25251804#25251804
+    origin: https://stackoverflow.com/questions/474528/what-is-the-best-way
+    -to-repeatedly-execute-a-function-every-x-seconds/25251804#25251804
     """
 
     interval = timedelta(weeks=weeks, days=days, hours=hours,
@@ -139,7 +140,7 @@ def start(option=0):
     if option == 1:
         # call repeatedly, e.g. every day at the same time
         sys.stdout.write("Restart will forced daily at the present time.\n")
-        repeat(restart_all, weeks=0, days=1, hours=0, minutes=0, seconds=0)
+        repeat(restart_all, days=1)
     elif option == 2:
         restart_all()
     elif option == 3:
