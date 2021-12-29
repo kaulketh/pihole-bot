@@ -64,10 +64,14 @@ class Bot:
             try:
                 signal.pause()
             except KeyboardInterrupt:
-                sys.stderr.write("\nProgram interrupted\n")
+                msg = "Program interrupted"
+                sys.stderr.write(f"\n{msg}\n")
+                self.__send(msg)
                 exit()
             except Exception as e:
-                sys.stderr.write("Other error or exception occurred!\n")
+                msg = "Any error or exception occurred!"
+                self.__send(msg)
+                sys.stderr.write(f"{msg}\n")
                 sys.stderr.write(f"{e}\n")
                 exit()
 

@@ -9,17 +9,16 @@
 import os
 import sys
 import time
-import traceback
 from datetime import timedelta
-from subprocess import call
+from subprocess import CalledProcessError, call
 
 import tzlocal
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from resources.constants import MINUTE
-from resources.secret import BOX_IP, BOX_USER_PW, \
-    REP_IP_1, REP_PW, REP_IP_2, BOX_USER
+from resources.secret import BOX_IP, BOX_USER, BOX_USER_PW, \
+    REP_IP_1, REP_IP_2, REP_PW
 
 
 class RebootFritzDevice:
@@ -46,13 +45,13 @@ class RebootFritzDevice:
                       f"</u:Reboot></s:Body></s:Envelope>\" " \
                       f"-s > /dev/null"
 
-        # noinspection PyBroadException
-        # TODO: Exception handling properly
         try:
             self.__return_value = call(self.__curl, shell=True)
-        except Exception as e:
-            # traceback.print_exc()
-            sys.stderr.write(f"Problem while executing cURL request: {e}\n")
+        except CalledProcessError as cpe:
+            sys.stderr.write(f"Problem while executing cURL request: {cpe}\n")
+            sys.stderr.write(f"Problem while executing cURL request: {cpe}\n")
+        except Exception as exc:
+            sys.stderr.write(f"{exc.__class__.__name__} {exc}")
 
 
 def repeat(func, *args,
@@ -79,14 +78,14 @@ def repeat(func, *args,
         sys.stdout.write(f"(Re)run {func} "
                          f"in {interval} seconds.\n")
         time.sleep(max(0.0, next_time - time.time()))
-        # noinspection PyBroadException
-        # TODO: Exception handling properly
+
         try:
             func(*args)
         except Exception as e:
-            traceback.print_exc()
             sys.stderr.write(
-                f"Problem while executing repetitive task: {e}\n")
+                f"Problem while executing repetitive task: "
+                f"{e.__class__.__name__} "
+                f"{e}\n")
         if interval != 0:
             # skip tasks if we are behind schedule:
             next_time += (time.time() - next_time) \
@@ -130,10 +129,8 @@ def schedule_as_cronjob(day_of_week='*', hour=4):
     scheduler.add_job(restart_all, trigger=cron_trigger)
     try:
         scheduler.start()
-    # noinspection PyBroadException
-    # TODO: Exception handling properly
     except Exception as e:
-        sys.stderr.write(f"{e}\n")
+        sys.stderr.write(f"{e.__class__.__name__} {e}\n")
 
 
 def start(option=0):
