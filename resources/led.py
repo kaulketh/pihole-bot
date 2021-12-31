@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------
-# leds.py
+# led.py
 # created 25.10.2021
 # Thomas Kaulke, kaulketh@gmail.com
 # https://github.com/kaulketh

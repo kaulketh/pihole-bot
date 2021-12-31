@@ -17,7 +17,7 @@ from telepot.loop import MessageLoop
 from resources.constants import HELP, LED_DISABLED, LED_ENABLED, PRIVATE, \
     RESTART_ALL, RESTART_DNS, RESTART_REPS, RESTART_ROUTER, START, \
     TELEGRAM_COMMANDS, WRONG
-from resources.leds import pwr_led_off, pwr_led_on
+from resources.led import pwr_led_off, pwr_led_on
 from resources.reboot import reboot_box, reboot_repeaters, restart_all
 from resources.secret import LIST_OF_ADMINS, TOKEN
 

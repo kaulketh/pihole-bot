@@ -9,6 +9,6 @@
 
 from .bot import run
 from .constants import *
-from .leds import *
+from .led import *
 from .reboot import *
 from .secret import *  # no public deployment
