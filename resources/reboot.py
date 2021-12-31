@@ -49,7 +49,6 @@ class RebootFritzDevice:
             self.__return_value = call(self.__curl, shell=True)
         except CalledProcessError as cpe:
             sys.stderr.write(f"Problem while executing cURL request: {cpe}\n")
-            sys.stderr.write(f"Problem while executing cURL request: {cpe}\n")
         except Exception as exc:
             sys.stderr.write(f"{exc.__class__.__name__} {exc}")
 
