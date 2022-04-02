@@ -89,12 +89,8 @@ class Bot:
             # help
             elif command == "/help":
                 self.__send(HELP)
-            # restart dns
-            elif command == "/pi_restart":
-                _execute_os_cmd(TELEGRAM_COMMANDS.get("/pi_restart"))
-                self.__send(RESTART_DNS)
-            # info (chronometer)
-            elif command == "/pi_info":
+            # info (chronometer shorten)
+            elif command == "/info":
                 m = _execute_os_cmd(TELEGRAM_COMMANDS.get(command))
                 i = m.rfind("Hostname")
                 self.__send(m[i:])

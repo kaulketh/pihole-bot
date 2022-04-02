@@ -14,15 +14,15 @@ Usage and possible commands:
 /help - this info
 
 PiHole control
-/pi_status - status of pihole
-/pi_disable - disable pihole
-/pi_enable - enable pihole
-/pi_restart - restart dns service
-/pi_version - show installed versions of pi-hole, console, FTL
-/pi_info - output stats
+/status - status of pihole
+/disable - disable pihole
+/enable - enable pihole
+/restart_dns - restart dns service
+/version - show installed versions of pi-hole, console, FTL
+/info - output stats
 /uptime - last start time of the RBPi
-/pi_update - force update
-/pi_list_update - update the list of ad-serving domains
+/update - force update
+/list_update - update the list of ad-serving domains
 
 /enable_pwr_LED - turn LED on
 /disable_pwr_LED - turn LED off
@@ -60,14 +60,14 @@ LED_DISABLED = """
 # commands
 TELEGRAM_COMMANDS = {
     "/RESTART": "sudo reboot",
-    "/pi_list_update": "pihole -g",
-    "/pi_info": "pihole -c -e",
-    "/pi_version": "pihole version",
-    "/pi_status": "pihole status",
-    "/pi_update": "pihole -up",
-    "/pi_restart": "pihole restartdns",
-    "/pi_enable": "pihole enable",
-    "/pi_disable": "pihole disable",
+    "/list_update": "pihole -g",
+    "/info": "pihole -c -e",
+    "/version": "pihole version",
+    "/status": "pihole status",
+    "/update": "pihole -up",
+    "/restart_dns": "pihole restartdns",
+    "/enable": "pihole enable",
+    "/disable": "pihole disable",
     "/uptime": "uptime"
 }
 
