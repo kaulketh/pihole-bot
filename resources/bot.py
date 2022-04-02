@@ -15,7 +15,7 @@ from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 
 from resources.constants import HELP, LED_DISABLED, LED_ENABLED, PRIVATE, \
-    RESTART_ALL, RESTART_DNS, RESTART_REPS, RESTART_ROUTER, START, \
+    RESTART_ALL, RESTART_REPS, RESTART_ROUTER, START, \
     TELEGRAM_COMMANDS, WRONG
 from resources.led import pwr_led_off, pwr_led_on
 from resources.reboot import reboot_box, reboot_repeaters, restart_all
@@ -56,7 +56,7 @@ class Bot:
         MessageLoop(self.__bot, self.__handle).run_as_thread()
         sys.stdout.write("I am listening...\n")
         self.__send(START)
-        self.__send(_execute_os_cmd(TELEGRAM_COMMANDS.get("/pi_status")))
+        self.__send(_execute_os_cmd(TELEGRAM_COMMANDS.get("/status")))
         pwr_led_off()
         self.__send(LED_DISABLED)
 
