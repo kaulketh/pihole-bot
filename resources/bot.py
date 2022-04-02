@@ -16,7 +16,7 @@ from telepot.loop import MessageLoop
 
 from resources.constants import HELP, LED_DISABLED, LED_ENABLED, PRIVATE, \
     RESTART_ALL, RESTART_REPS, RESTART_ROUTER, START, \
-    TELEGRAM_COMMANDS, WRONG
+    TELEGRAM_COMMANDS, WRONG, RESTART_DNS
 from resources.led import pwr_led_off, pwr_led_on
 from resources.reboot import reboot_box, reboot_repeaters, restart_all
 from resources.secret import LIST_OF_ADMINS, TOKEN
@@ -89,6 +89,10 @@ class Bot:
             # help
             elif command == "/help":
                 self.__send(HELP)
+            # restart dns (to avoid "Bad Request: message text is empty...")
+            elif command == "/restart_dns":
+                _execute_os_cmd(TELEGRAM_COMMANDS.get("/restart_dns"))
+                self.__send(RESTART_DNS)
             # info (chronometer shorten)
             elif command == "/info":
                 m = _execute_os_cmd(TELEGRAM_COMMANDS.get(command))

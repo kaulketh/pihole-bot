@@ -56,6 +56,11 @@ LED_ENABLED = """
 [✓] Power LED enabled"""
 LED_DISABLED = """
 [✗] Power LED disabled"""
+UPDATE_PIHOLE = """
+[✓] Update local cache of available packages
+[✓] Checking...
+[✓] Checking for updates of core, web interface and FTL...
+[i] For further info check logs and system information!"""
 
 # commands
 TELEGRAM_COMMANDS = {
